@@ -21,7 +21,20 @@ if($purpose==0){//通过photoid获取图片名称
 	$row = $result->fetch_assoc();
 	if($row>0){
 		$row['status1']=0;
+
+
+		$sql = "update photos set popular=popular+1 where id='$photoid';";
+		$result = $mysqli->query($sql);
+		if($mysqli->affected_rows==1){
+		    $row['status2'] = 0;
+		}
+		else{
+		    $row['status2'] = 1;
+		}
+
+
 		$tmp=$row;
+
 	}
 	else{
 		$tmp['status1']=1;

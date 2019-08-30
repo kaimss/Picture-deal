@@ -15,7 +15,7 @@ if ($mysqli->connect_error) {
 
 $userid=$_POST['userid'];
 
-$sql = "select * from photos,user_photo where photos.id=user_photo.photoid and user_photo.userid='$userid';";
+$sql = "select * from photos,user_photo where photos.id=user_photo.photoid and user_photo.userid='$userid' order by popular desc;";
 $result = $mysqli->query($sql);
 
 $tmp=array();

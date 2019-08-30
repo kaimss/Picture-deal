@@ -14,7 +14,7 @@ if ($mysqli->connect_error) {
 }
 
 
-$sql = "select * from photos;";
+$sql = "select * from photos order by popular desc;";
 $result = $mysqli->query($sql);
 
 $tmp=array();
