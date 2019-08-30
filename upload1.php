@@ -66,7 +66,7 @@ else{//不存在相同图片
 
 
 		//插入photos数据库
-		$sql="insert into photos (id,name,photo,sha1,population) values ('$max_id','$name','$filePath','$sha',0);";
+		$sql="insert into photos (id,name,photo,sha1,popular) values ('$max_id','$name','$filePath','$sha',0);";
 		$result=$mysqli->query($sql);
 		if($result==1){//插入成功
 		    $tmp['status2']=0;
@@ -79,6 +79,7 @@ else{//不存在相同图片
 	}
 	else{//如果存储失败
 		$tmp['status1']=1;
+
 	}
 }
 if($is_moveorexist){
