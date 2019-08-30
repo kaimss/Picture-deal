@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>
+    <title>上传</title>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-inverse " role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">index</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li><a href="main1.html">main</a></li>
+            <li class="active"><a href="upload1.html">upload</a></li>
+            <li><a href="show1.html">show</a></li>
+            <li><a href="manage1.html">manage</a></li>
+            <li><a href="javascript:void(0);" onclick="logout(this)">logout</a></li>
+        </ul>
+    </div>
+</nav>
+<br>
+<div>
+    <div class="container-fluid">
+        <div class="row" style="height:80px;">
+
+            <div class="col-sm-1"></div>
+            <div class="col-sm-6">
+                <div class="form-horizontal" >
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">选择图片</label>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <input id='location' class="form-control" onclick="$('#i-file').click();">
+                                <label class="input-group-btn">
+                                    <input type="button" id="i-check" value="浏览图片" class="btn btn-info" onclick="$('#i-file').click();">
+                                </label>
+                            </div>
+                            <input type="file" name="photo" id='i-file'  accept="" onchange="imgChanges(this)" style="display: none">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button class="btn btn-default" onclick="upload()">提交</button>
+                        </div>
+                    </div>
+                    <input type="text" name="userid" id='userid' style="display:none;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</form>
+</body>
+<script>
+    $(document).ready(function() {
+        //判断用户是否登录
+        var user = sessionStorage.getItem("user");
+        if (user == null) {
+            alert("请登录");
+            window.location.href = "index.html";
+        }
+        user = JSON.parse(user);
+        console.log(user);
+
+        $("#userid").val(user.userid);
+
+
+
+    });
+
+
+    function imgChanges(img)
+    {
+
+        $('#location').val($('#i-file').val());
+
+    }
+    
+
+
+    function upload()
+    {
+        let userid=JSON.parse(sessionStorage.getItem("user")).userid;
+        //var data = new FormData(document.getElementById("upfile"));
+        var file1 = $("#i-file")[0].files[0];  
+        console.log("file",file1);
+        var data = new FormData();
+        data.append('userid',userid);
+        data.append('file',file1);
+        //console.log("data",data);
+
+        $.ajax({
+            url:'upload1.php', /*去过那个php文件*/
+            type:'POST',  /*提交方式*/
+            data:data,
+            dataType:"json",
+            cache: false,
+            contentType: false,        /*不可缺*/
+            processData: false,         /*不可缺*/
+            success:function(data){ 
+                console.log(data); 
+                if(data.status4==0){
+                    alert("上传成功");
+                }
+                else if(data.status3==0){
+                    alert("请不要重复上传");
+                }
+                else{
+                    alert("上传失败");
+                }
+
+                //$("#imgs").attr("src",data.file);
+            },
+            error: function(jqXHR,textStatus,errorThrown)
+            {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown)
+            }
+        });
+    }
+
+    function logout(t)
+    {
+        if(confirm("确定退出登录?")){
+            sessionStorage.removeItem("user");
+            window.location.href="index.html";　
+        }  
+    }
+</script>
+</html>
+
+
+
+
+
+

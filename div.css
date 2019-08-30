@@ -1,0 +1,145 @@
+/* CSS Document */
+
+.subcon_photo img {
+    height: 100%;
+}
+.content{
+    /* margin-top:1%; */
+    height: 82%;
+    width:100%;
+    /* 修改于 2019.5.25 */
+    /* background-color:antiquewhite; */
+    background-color: rgb(250, 250, 250);
+    border-color: rgba(204, 221, 0,0.5);
+    border-style: solid;
+    border-width: 3px;
+    border-radius: 10px;
+}
+
+.subcontent{
+    margin-top:2%;
+    margin-left:1.5%;
+    padding-top: 8px;
+    height: 220px;
+    width:160px;
+    float:left;
+    background-color: aliceblue;
+    /* 修改于 2019.5.25 */
+    -webkit-transition: 0.2s all;
+    box-shadow: darkgrey 1px 1px 2px 1px /* 边框阴影 */
+}
+
+.subcontent:hover{
+    /* 修改于 2019.5.25 */
+    -webkit-transition: 0.2s all;
+    box-shadow: darkgrey 3px 3px 4px 1px /* 边框阴影 */
+}
+.subcon_photo{
+    /*text-align: center;*/
+    height:90%;
+    weight:90%;
+}
+.subcon_photo span{
+    display:none;
+}
+.subcon_photo:hover span{
+    display:none;
+}
+
+.subcon_photo .social {
+    padding: 0;
+    margin: 0;
+    margin-top:10%;
+    list-style: none;
+    transform: translateY(-150%);
+    /*  transform:translateX(-10%);*/
+    /*   position: absolute;
+       top: 50%;
+        left: 10px;*/
+
+    z-index: 4;
+    /*	background-color:aqua;*/
+}
+.subcon_photo .social li {
+
+    margin:0;
+    margin-right:80%;
+    opacity: 0;
+    transition: transform .3s ease-out 0s;
+
+}
+.subcon_photo:hover .social li {
+    opacity: 1;
+    transform: translateX(0%);
+}
+.subcon_photo:hover .social li:nth-child(2){ transition-delay: 0.1s; }
+.subcon_photo:hover .social li:nth-child(3){ transition-delay: 0.2s; }
+.subcon_photo:hover .social li:nth-child(4){ transition-delay: 0.3s; }
+.subcon_photo .social li a {
+    color:#60A6F9;
+    font-size: 22px;
+    transition: all 0.3s;
+}
+.subcon_photo .social li a:hover { color:#E43F00; }
+.subcon_photo .social li a:before,
+.subcon_photo .social li a:after{
+    content: attr(data-tip);
+    color: #000;
+    background: #fff;
+    font-size: 14px;
+    padding: 5px 10px;
+    white-space: nowrap;
+    display: none;
+    transform: translateY(-50%);
+    position: absolute;
+    left: 33px;
+    top: 50%;
+    transition: all 0.3s;
+}
+.subcon_photo .social li a:after{
+    content: '';
+    background: linear-gradient(-45deg, #fff 49%, transparent 50%);
+    width: 10px;
+    height: 10px;
+    top: 40%;
+    left: 20px;
+}
+.subcon_photo .social li a:hover:before,
+.subcon_photo .social li a:hover:after{
+    display: block;
+}
+
+
+
+
+.subcon_name,.subcon_author,.subcon_price{
+    margin-left:5%;
+}
+.subcon_name a,a:link,a:hover {
+    color:black;
+    text-decoration: none;
+}
+.subcon_seller a,a:link,a:hover {
+    color:black;
+    text-decoration: none;
+}
+.subcon_name{
+    font-size:15px;
+    font-weight: 900;
+    weight:100%;
+}
+
+.subcon_price{
+    float:left;
+    weight:100%;
+    color:#FB8C00;
+}
+.subcon_author{
+    font-size:1px;
+    weight:100%;
+}
+.subcon_seller{
+    margin-left:10%;
+    float:left;
+    weight:100%;
+}

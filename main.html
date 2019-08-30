@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>
+    <title>main</title>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-inverse " role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">index</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="main.html">main</a></li>
+            <li><a href="upload.html">upload</a></li>
+            <li><a href="javascript:void(0);" onclick="toshow(this)">show</a></li>
+            <li><a href="javascript:void(0);" onclick="logout(this)">logout</a></li>
+        </ul>
+
+    </div>
+
+</nav>
+<br>
+<div class="container-fluid">
+    <div class="col-sm-3 left"></div>
+    <div class="col-sm-6 main">
+        <!--<button type="button" class="btn btn-primary"-->
+                <!--data-toggle="button" id="test"> 删除-->
+        <!--</button>-->
+    </div>
+    <div class="col-sm-3 right"></div>
+</div>
+
+
+</body>
+<script>
+    $(document).ready(function(){
+        let user = sessionStorage.getItem("user");
+        console.log(user);
+        if(user==null){
+            alert("请登录");
+            window.location.href="index.html";
+        }
+        // $("#test").click(function(){
+        //     sessionStorage.removeItem("user");
+        //     window.location.href="index.html";
+        // });
+    })
+    function logout(t)
+    {
+        sessionStorage.removeItem("user");
+        window.location.href="index.html";
+    }
+    function toshow(t)
+    {
+        window.location.href="show.php?id="+JSON.parse(sessionStorage.getItem("user")).userid;
+    }
+</script>
+</html>

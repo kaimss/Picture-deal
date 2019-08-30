@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>
+    <title>register</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row" style="height:80px;"></div>
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-4">
+
+
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="username" class="col-sm-2 control-label">用户名</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="username"class="form-control" id="username" placeholder="请输入用户名">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password1" class="col-sm-2 control-label">密码</label>
+                    <div class="col-sm-10">
+                        <input type="password1" name="password"class="form-control" id="password1" placeholder="请输入密码">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password2" class="col-sm-2 control-label">密码</label>
+                    <div class="col-sm-10">
+                        <input type="password2" name="password"class="form-control" id="password2" placeholder="请再次输入密码">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-4  btn-group btn-group-default">
+                        <button type="button" class="btn btn-primary" id="register" onclick="registers()">注册</button>
+                    </div>
+                    <div class="col-sm-offset-2  btn-group btn-group-default">
+                        <button type="button" class="btn btn-primary" id="cancel" onclick="cancels()">取消</button>
+                    </div>
+                </div>
+
+            </form>
+
+
+
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    function registers(){
+        let name=$("#username").val();
+        let passwd=$("#password1").val();
+        let passwd2=$("#password2").val();
+        console.log(passwd);
+        console.log(passwd2);
+        if(name==""||passwd==""||passwd2==""){
+            alert("不完整的输入！");
+            return;
+        }
+        else if(passwd.length<6||passwd2<6){
+            alert("密码小于6位");
+            $("#password1").val("");
+            $("#password2").val("");
+            return;
+        }
+        else if(passwd!=passwd2){
+            alert("两次密码不一致");
+            $("#password1").val("");
+            $("#password2").val("");
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "index.php",
+            data: {"username": name, "password": passwd, "purpose":1},
+            dataType: "text",
+            success: function(data)
+            {
+                //返回值
+                console.log("data",data);
+                var datas = JSON.parse(data);
+                if(datas.status==0){
+                    //alert("注册成功！注册id为"+datas.userId);
+                    alert("注册成功！");
+                    window.location.href="index.html"
+                }
+                else{
+                    alert("注册失败！");
+                }
+
+
+            },
+            error: function(jqXHR,textStatus,errorThrown)
+            {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown)
+            }
+        })
+
+    }
+    function cancels(){
+        window.location.href="index.html";
+    }
+</script>
+</html>

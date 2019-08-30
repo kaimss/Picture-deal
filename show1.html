@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>
+    <link rel="stylesheet" href="div1.css">
+    <title>show1</title>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-inverse " role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">index</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li><a href="main1.html">main</a></li>
+            <li><a href="upload1.html">upload</a></li>
+            <li class="active"><a href="show1.html">show</a></li>
+            <li><a href="manage1.html">manage</a></li>
+            <li><a href="javascript:void(0);" onclick="logout(this)">logout</a></li>
+        </ul>
+    </div>
+</nav>
+<br>
+<!--主体-->
+<div class="container-fluid main">
+    <!--    左边-->
+    <div class="col-sm-1">
+
+    </div>
+    <!--    中间-->
+    <div class="col-sm-10" id="content">
+
+        <!-- <div class="subcontent"> -->
+            <!-- <div  class="subcon_photo" align="center"> -->
+                <!-- <img id="imgs" width="100" height="200" > -->
+            <!-- </div> -->
+        <!-- </div> -->
+
+    </div>
+    <!--    右边-->
+    <div class="col-sm-1"></div>
+
+</div>
+</div>
+
+</body>
+<script>
+    $(document).ready(function(){
+
+        var user = sessionStorage.getItem("user");
+        if(user==null){
+            alert("请登录");
+            window.location.href="index.html";
+        }
+        user = JSON.parse(user);
+        console.log("user",user);
+
+        getphoto();
+
+
+    });
+    function getphoto()
+    {
+         $.ajax({
+            url:'show1.php', /*去过那个php文件*/
+            type:'POST',  /*提交方式*/
+            dataType:"json",
+            success:function(data){ 
+                console.log(data);  
+                $("#content").empty();
+                let len=data.length;
+                for(let i=1;i<len;i++){
+                    $("#content").append("<div class='subcontent'><div class='picture' onclick='view(this)'><img  height='180px'  src='"+data[i].photo+"'><span id='photoid' style='display:none;'>"+data[i].id+"</span></div></div>");
+                }
+            
+            },
+            error: function(jqXHR,textStatus,errorThrown)
+            {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown)
+            }
+        });
+    }
+    function view(t)
+    {
+        //console.log(t.children[1].innerHTML);
+        let photoid=t.children[1].innerHTML;
+        $.ajax({
+            url:'photo1.php', /*去过那个php文件*/
+            type:'POST',  /*提交方式*/
+            data:{"photoid":photoid},
+            dataType:"json",
+            success:function(data){ 
+                console.log(data);  
+                $("#content").empty();
+                let len=data.length;
+                if(len==2){
+                    $("#content").append("<div class='picture'><img  height='400px'  src='"+data[1].photo+"'><span id='photoid' style='display:none;'>"+data[1].id+"</span></div>");
+                    $("#content").append(
+                        "<div style='margin-top:10px;'> "+
+                            "<div class='col-sm-offset-1 btn-group btn-group-default'>"+
+                                "<button type='button' class='btn btn-primary' onclick='dow()'>下载</button>"+
+                            "</div>"+
+                            "<div class='col-sm-offset-1 btn-group btn-group-default'>"+
+                                "<button type='button' class='btn btn-primary' onclick='fav()'>转存</button>"+
+                            "</div>"+
+                            "<div class='col-sm-offset-1 btn-group btn-group-default'>"+
+                                "<button type='button' class='btn btn-primary' onclick='ret()'>返回</button>"+
+                            "</div>"+
+                        "</div>");
+                }
+            
+            },
+            error: function(jqXHR,textStatus,errorThrown)
+            {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown)
+            }
+        });
+
+    }
+    function dow()
+    {
+        let photoid=$("#photoid").text();
+        //console.log("photoid",photoid);
+        $.ajax({
+            url:'deal1.php', /*去过那个php文件*/
+            type:'POST',  /*提交方式*/
+            data:{"photoid":photoid,"purpose":0},
+            dataType:"json",
+            success:function(data){ 
+                console.log(data);  
+                $("body").append(
+                    "<div style='display:none'>"+
+                        "<form action='download.php' method='POST'>"+
+                            "<input type='text' name='filename' value='"+data.name+"''>"+
+                            "<input type='text' name='filepath' value='"+data.photo+"''>"+
+                            "<input id='submit' type='submit'>"+
+                        "</form>"+
+                    "</div>");
+                $("#submit").click();
+
+
+            },
+            error: function(jqXHR,textStatus,errorThrown)
+            {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown)
+            }
+        });       
+    }
+    function fav()
+    {
+        let userid=JSON.parse(sessionStorage.getItem("user")).userid;
+        let photoid=$("#photoid").text();
+        console.log("u+p",userid+"  "+photoid);
+        $.ajax({
+            url:'deal1.php', /*去过那个php文件*/
+            type:'POST',  /*提交方式*/
+            data:{"userid":userid,"photoid":photoid,"purpose":1},
+            dataType:"json",
+            success:function(data){ 
+                console.log(data);  
+                if(data.status2==0&&data.status3==0){
+                    alert("转存成功");
+                }
+                else if(data.status2==1){
+                    alert("已转存，请不要重复操作");
+                }
+                else{
+                    alert("错误");
+                }
+            },
+            error: function(jqXHR,textStatus,errorThrown)
+            {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown)
+            }
+        });
+    }
+    function ret()
+    {
+        getphoto();
+    }
+
+    function logout(t)
+    {
+        if(confirm("确定退出登录?")){
+            sessionStorage.removeItem("user");
+            window.location.href="index.html";　
+        }  
+    }
+</script>
+</html>
